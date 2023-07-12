@@ -28,3 +28,6 @@
 | 23.06.21 ~ 23.07.09 | ✅ |
 
 <br />
+
+## node_modules 폴더는 커밋 지양.
+- .gitignore에 node_modules/, .env 작성 후 커밋하면 해결가능
