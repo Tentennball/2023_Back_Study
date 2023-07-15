@@ -8,9 +8,9 @@
 ### 스터디원
 [이태훈](https://github.com/Tentennball),
 [주민기](https://github.com/mingking2),
-[정민주],
-[김상정],
-[김승제]
+[정민주](https://github.com/jung-min-ju),
+[김상정](https://github.com/sangjung0),
+[김승제](https://github.com/whitecity01)
 
 <br />
 <br />
