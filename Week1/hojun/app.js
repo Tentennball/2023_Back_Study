@@ -1,14 +1,14 @@
-// node_modules 에 있는 express 관련 파일을 가져온다.
-const express = require('express')
-const app = express()
-app.use(express.json())
-
 // env
 const dotenv = require('dotenv')
 dotenv.config()
 
 // private key
 const privateKey = process.env.KEY
+
+// node_modules 에 있는 express 관련 파일을 가져온다.
+const express = require('express')
+const app = express()
+app.use(express.json())
 
 // connect my_db
 const mysql = require('mysql')
@@ -21,6 +21,8 @@ const connection = mysql.createConnection({
 
 // node_modules 에 있는 jsonwebtoken 관련 파일을 가져온다.
 const jwt = require("jsonwebtoken")
+
+const { v4 } = require('uuid')
 
 // 4000 포트로 서버 오픈
 app.listen(4000, function () {
@@ -81,7 +83,7 @@ app.post('/v1/login/jwtLogin', function (req, res) {
         else {
             if (results.length === 0) res.send('Invalid email or password')
             else {
-                const token = jwt.sign({ email: results.email }, privateKey)
+                const token = jwt.sign({ email: results[0].email }, privateKey)
                 res.header('authorization', token).send('Login Complete!')
             }
         }
@@ -97,4 +99,53 @@ app.post('/v1/login/jwtVerify', function (req, res) {
     res.send(verified)
 })
 
-// connection.end()
+app.post('/v1/login/sessionLogin', function (req, res) {
+    const reqBody = req.body
+
+    let flag
+    const setFlag = (value) => flag = value
+
+    connection.connect()
+
+    const sql_login = `SELECT * FROM users WHERE email LIKE '${reqBody.email}' AND password LIKE '${reqBody.password}'`
+    connection.query(sql_login, (error, results, fields) => {
+        if (error) console.log(error)
+        else {
+            if (results.length === 0) setFlag(false)
+            else setFlag(true)
+        }
+    })
+
+    const data = {
+        email: reqBody.email
+    }
+
+    const sql_insert = `INSERT INTO sessions (session_id, expires, data) VALUES ('${v4()}', '${new Date().getTime()}', '${JSON.stringify(data)}')`
+    connection.query(sql_insert, (error, results, fields) => {
+        if (error) console.log(error)
+        else {
+            if (flag) res.send('Login Complete!')
+            else res.send('Invalid email or password')
+        }
+    })
+
+    connection.end()
+})
+
+app.post('/v1/login/sessionVerify', function (req, res) {
+    const reqBody = req.body
+
+    connection.connect()
+
+    const sql_login = `SELECT * FROM sessions WHERE session_id LIKE '${reqBody.session_id}'`
+    connection.query(sql_login, (error, results, fields) => {
+        if (error) console.log(error)
+        else {
+            console.log(results)
+            if (results.length === 0) res.send('Invaild session')
+            else res.send(JSON.parse(results[0].data).email)
+        }
+    })
+
+    connection.end()
+})
