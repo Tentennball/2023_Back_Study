@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth</title>
+    <style>
+        /* Common styles for all login buttons */
+        .login-button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 4px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Naver login button */
+        .naver-login {
+            background-color: #1EC800;
+        }
+
+        /* Kakao login button */
+        .kakao-login {
+            background-color: #FFD700;
+        }
+
+        /* Google login button */
+        .google-login {
+            background-color: #DB4437;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Login buttons -->
+    <a href="http://localhost:4000/v1/auth/naver" class="login-button naver-login">Naver Login</a>
+    <a href="http://localhost:4000/v1/auth/kakao" class="login-button kakao-login">Kakao Login</a>
+    <a href="http://localhost:4000/v1/auth/google" class="login-button google-login">Google Login</a>
+</body>
+
+</html>
