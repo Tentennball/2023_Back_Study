@@ -21,7 +21,7 @@
 | :---: | :---: | :---: |
 | 23.07.15 ~ 23.07.15 |OT| ✅ |
 | 23.07.16 ~ 23.07.22 |MySQL 연동, 세션로그인, JWT로그인, 소셜로그인| ✅ |
-| 23.07.22 ~ 23.07.29 |File Processing Ability(Json , Xml , Yaml , Csv, exif)| ✅ |
+| 23.07.22 ~ 23.07.29 |File Processing Ability(Json , Xml , Yaml , Csv, exif)|  |
 
 
 <br />
