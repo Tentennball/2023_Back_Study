@@ -6,7 +6,7 @@ module.exports = {
     fr.fileReader(path).then((data) => {
       const message = {
         status: "ok",
-        body: data
+        body: JSON.parse(data)
       }
       res.send(message)
     });
