@@ -1,6 +1,6 @@
 # Back_Study
 ## Mongo Processing Ability + API 
-
+### NOSQL과 toss payment API 사용
 
 ### User Model
 #### Attribute
@@ -34,7 +34,7 @@ price(String) , name(String) , seller(String)
 ![image](https://user-images.githubusercontent.com/98307410/216811797-fc63c968-908d-48f9-be39-83d9154119f4.png)
 
 ### 3. /v1/toss/payments에 GET 방식으로 요청을 보낼 시 , Login 한 유저가 결제한 기록들을 파싱하여 출력한다. 
-#### ( Toss /v1/payments/{paymentKey} 사용 )
+#### ( Toss /v1/payments/{paymentKey} 사용 , 필요시 UI개선해서 렌더링해도 됨.)
 ![image](https://user-images.githubusercontent.com/98307410/216832183-60f1bd2d-a26e-42be-b68c-6cc10a7c2e11.png)
 
 ### 4. /v1/toss/payment/:paymentKey에 GET 방식으로 요청을 보낼 시 , 결제에 대한 정보를 SMS로 보낸다.
