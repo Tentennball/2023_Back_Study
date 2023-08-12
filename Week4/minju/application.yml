@@ -1,0 +1,29 @@
+
+payment:
+  toss:
+    test_client_api_key : test_ck_YPBal2vxj81aZ2dAdB285RQgOAND
+    test_secret_api_key : test_sk_OAQ92ymxN347PeMpQzK8ajRKXvdk
+    success_url : https://docs.tosspayments.com/guides/payment/test-success
+    fail_url : https://docs.tosspayments.com/guides/payment/test-fail
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/ToyProject_login?autoReconnect=true&useUnicode=true&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
+    dbcp:
+      test-on-borrow: true
+      validation-query: select 1
+    username: root
+    password: Minju0405!
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+    table-name: toyproject_login
+
+logging:
+  level:
+    org.springframework: DEBUG

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>store</title>
+</head>
+<body>
+<form action="/store" method="post">
+    <p th:text="'안녕하세요 '+${constructor} + '님.'"></p>
+   <p th:text="'판매자 : '+${seller}"></p>
+   <p th:text="'가격 : '+${price}"></p>
+   <p th:text="'품명 : '+${product_name}"></p>
+    <button type="submit" th:text="${price + ' 결제'}"></button>
+</form>
+</body>
+</html>
+
+
