@@ -44,11 +44,13 @@ public class TossController {
         // 랜덤한 8자리 숫자 생성
         int randomOrderId = generateRandomOrderId();
         String orderId = String.format("%08d", randomOrderId); // 8자리 숫자로 포맷팅
+        session.setAttribute("orderId",orderId);
 
         model.addAttribute("amount", history.get().getTotalAmount());
         model.addAttribute("orderId", orderId);
         model.addAttribute("orderName", product);
         model.addAttribute("customerName", customerName);
+        model.addAttribute("paymentKey", history.get().getPaymentKey());
 
         // 아래 라인을 추가하여 변수 값들을 출력하도록 합니다.
         System.out.println("amount: " + history.get().getTotalAmount());
@@ -65,7 +67,6 @@ public class TossController {
         return rand.nextInt(100000000); // 0부터 99999999 사이의 랜덤 숫자
     }
 }
-
 
 /*
 *       amount: 100, // 결제 금액

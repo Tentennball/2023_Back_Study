@@ -1,6 +1,7 @@
     package week4.tosspayments;
 
     import lombok.Getter;
+    import lombok.Setter;
     import org.springframework.beans.factory.annotation.Value;
     import org.springframework.context.annotation.Configuration;
 
@@ -24,6 +25,12 @@
         @Value("${payment.toss.fail_url}")
         private String fail_url;
 
+        @Value("${spring.mail.username}")
+        private String mail;
+
         public static final String url = "https://api.tosspayments.com/v1/payments/";
+
+        @Setter
+        private String  encodedApiKey; //여기서 내 secretket로 인코딩 받은 값 넣어줄 것임
 
     }

@@ -1,34 +1,39 @@
 package week4.tosspayments;
 
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.URI;
-import java.io.IOException;
+import org.springframework.stereotype.Component;
+
+import java.util.Base64;
 
 @SpringBootApplication
 public class TosspaymentsApplication {
 
-	public void confirmPayment() throws IOException, InterruptedException {
-		HttpRequest request = HttpRequest.newBuilder()
-				.uri(URI.create("https://api.tosspayments.com/v1/payments/confirm"))
-				.header("Authorization", "Basic dGVzdF9za196WExrS0V5cE5BcldtbzUwblgzbG1lYXhZRzVSOg==")
-				.header("Content-Type", "application/json")
-				.method("POST", HttpRequest.BodyPublishers.ofString("{\"paymentKey\":\"YOUR_PAYMENT_KEY\",\"amount\":15000,\"orderId\":\"S-WTqIm5SRDajklQM7Rex\"}"))
-				.build();
-
-		HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
-		System.out.println(response.body());
+	public static void main(String[] args) {
+		SpringApplication.run(TosspaymentsApplication.class, args);
 	}
- 	public static void main(String[] args) {
- 		 SpringApplication.run(TosspaymentsApplication.class, args);
-		TossPaymentConfirm tossPaymentConfirm = new TossPaymentConfirm();
-		try {
-			tossPaymentConfirm.confirmPayment();
-		} catch (IOException | InterruptedException e) {
-			e.printStackTrace();
-		}
- 	}
+}
+
+@Component
+class ApplicationInitializer implements CommandLineRunner {
+
+	//CommandLineRunner : 스프링 부트 애플리케이션이 시작될 때 실행되는 특정한 작업을 정의할 수 있는 인터페이스
+
+	private final TosspaymentsConfig tosspaymentsConfig;
+
+	public ApplicationInitializer(TosspaymentsConfig tosspaymentsConfig) {
+		this.tosspaymentsConfig = tosspaymentsConfig;
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		String apiKey = tosspaymentsConfig.getTestSecretKey();
+
+		// 문자열을 바이트 배열로 변환하여 Base64 인코딩
+		byte[] apiKeyBytes = apiKey.getBytes();
+		String encodedApiKey = Base64.getEncoder().encodeToString(apiKeyBytes);
+		tosspaymentsConfig.setEncodedApiKey(encodedApiKey);
+		System.out.println(encodedApiKey);
+	}
 }
