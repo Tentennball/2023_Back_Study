@@ -7,9 +7,6 @@ import lombok.*;
 @Setter
 @Getter
 @Builder
-public class MessageDTO {
+public class PhoneNumDTO {
     String to;
-    String OrderId;
-    String OrderName;
-    String OrderAmount;
 }

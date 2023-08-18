@@ -1,6 +1,7 @@
 package week4.tosspayments.Controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import week4.tosspayments.Domain.DomainUser;
 import week4.tosspayments.Entity.User;
 import week4.tosspayments.Service.MemberService;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class MemberShipController {
@@ -26,7 +29,7 @@ public class MemberShipController {
     }
 
     @PostMapping("/membership")
-    public ResponseEntity<String> loginInfo(@ModelAttribute DomainUser Domain_user) { //웹에서 post 한 값 domain_user 에 담기
+    public ResponseEntity<String> loginInfo(@ModelAttribute DomainUser Domain_user, HttpSession session) { //웹에서 post 한 값 domain_user 에 담기
         try {
             //domain_user에 담았던 내용 entity, 즉 db 테이블에 저장하기
             User user = new User();
@@ -36,6 +39,11 @@ public class MemberShipController {
             user.setPhoneNumber(Domain_user.getPhoneNumber());
 
             Long memberId = memberService.join(user);
+
+            //해당 세션에 회원가입한 정보, 세션에 저장
+            session.setAttribute("email",Domain_user.getEmail());
+            session.setAttribute("name",Domain_user.getName());
+            session.setAttribute("phoneNumber",Domain_user.getPhoneNumber());
 
             return ResponseEntity.ok("회원 가입이 완료되었습니다. 회원 ID: " + memberId);
         } catch (IllegalStateException e) {

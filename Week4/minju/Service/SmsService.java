@@ -12,12 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import week4.tosspayments.Dto.MessageDTO;
+import week4.tosspayments.Dto.PhoneNumDTO;
 import week4.tosspayments.Dto.SmsRequestDTO;
 import week4.tosspayments.Dto.SmsResponseDTO;
 import week4.tosspayments.TosspaymentsConfig;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -61,7 +63,7 @@ public class SmsService {
         return encodeBase64String;
     }
 
-    public SmsResponseDTO sendSms(MessageDTO messageDto) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    public SmsResponseDTO sendSms(PhoneNumDTO phoneNumDTO, HttpSession session) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
         Long time = System.currentTimeMillis();
         String accessKey = tosspaymentsConfig.getAccessKey();
         String phone = tosspaymentsConfig.getPhone();
@@ -72,15 +74,29 @@ public class SmsService {
         headers.set("x-ncp-iam-access-key", accessKey);
         headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
 
+        MessageDTO messageDto = new MessageDTO(); // 메시지 생성
+
+        messageDto.setTo(phoneNumDTO.getTo()); // 전화번호 설정
+        messageDto.setOrderId((String) session.getAttribute("orderId")); // 주문번호 설정
+        messageDto.setOrderName((String) session.getAttribute("Product")); // 제품명 설정
+        messageDto.setOrderAmount((String) session.getAttribute("Price")); // 가격 설정
+
+        String orderName = messageDto.getOrderName();
+        String orderAmount = messageDto.getOrderAmount();
+        String orderId = messageDto.getOrderId();
+
         List<MessageDTO> messages = new ArrayList<>();
         messages.add(messageDto);
+
+        // .content 부분을 pn_dto에서 추출한 값들을 이용하여 조합
+        String content = "주문번호:" + orderId + ", 주문명: " + orderName + ", 가격: " + orderAmount;
 
         SmsRequestDTO request = SmsRequestDTO.builder()
                 .type("SMS")
                 .contentType("COMM")
                 .countryCode("82")
                 .from(phone)
-                .content(messageDto.getContent())
+                .content(content)
                 .messages(messages)
                 .build();
         System.out.println("phone" + phone);

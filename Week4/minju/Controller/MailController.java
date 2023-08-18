@@ -52,8 +52,10 @@ public class MailController {
         try {
             MimeMessage m = mailSender.createMimeMessage();
             MimeMessageHelper h = new MimeMessageHelper(m, "UTF-8");
-            h.setFrom(tosspaymentsConfig.getMail()); // 앞서 설정한 본인의 Naver Email
-            h.setTo("migo9711@naver.com");
+            h.setFrom(tosspaymentsConfig.getMail()); // 앞서 설정한 본인의 Naver Email. 발신메일
+
+            String setToMail = (String)session.getAttribute("email");
+            h.setTo(setToMail);
 
             // 이메일 제목 설정
             h.setSubject("토스 결제하셨습니다.");

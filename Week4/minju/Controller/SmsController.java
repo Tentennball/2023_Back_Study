@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestClientException;
 import week4.tosspayments.Dto.MessageDTO;
+import week4.tosspayments.Dto.PhoneNumDTO;
 import week4.tosspayments.Dto.SmsResponseDTO;
 import week4.tosspayments.Service.SmsService;
 
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -31,12 +33,16 @@ public class SmsController {
     }
 
     @PostMapping("/sms/send")
-    public String sendSms(MessageDTO messageDto, Model model) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
+    public String sendSms(Model model, HttpSession httpSession) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
         try {
-            System.out.println("MessageDTO 발신확인"+messageDto.getTo());
-            System.out.println("MessageDTO 내용확인"+messageDto.getContent());
+            String phoneNumber = (String) httpSession.getAttribute("phoneNumber");
+            PhoneNumDTO phoneNumDTO = new PhoneNumDTO();
+            phoneNumDTO.setTo(phoneNumber); // 세션에서 가져온 전화번호 설정
 
-            SmsResponseDTO response = smsService.sendSms(messageDto);
+            System.out.println("MessageDTO 발신확인" + phoneNumDTO.getTo());
+            System.out.println("MessageDTO 발신확인"+phoneNumDTO.getTo());
+
+            SmsResponseDTO response = smsService.sendSms(phoneNumDTO,httpSession);
             log.debug("SmsResponseDTO: {}", response);
             log.debug("requestId: {}", response.getRequestId());
             model.addAttribute("response", response);
