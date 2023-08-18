@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>History Data</title>
+</head>
+<body>
+  <h1>History Data</h1>
+  <ul>
+    <% for (const history of histories) { %>
+      <li>
+        <strong>History ID:</strong> <%= history.historyId %><br>
+        <strong>Status:</strong> <%= history.status %><br>
+        <strong>Provided At:</strong> <%= history.provatedAt %><br>
+        <strong>Order ID:</strong> <%= history.orderId %><br>
+        <strong>Order Name:</strong> <%= history.orderName %><br>
+        <strong>Payment Key:</strong> <%= history.paymentKey %><br>
+        <strong>Total Amount:</strong> <%= history.totalAmount %><br>
+        <strong>User ID:</strong> <%= history.id %><br>
+        <strong>Created At:</strong> <%= history.createdAt %><br>
+        <strong>Updated At:</strong> <%= history.updatedAt %><br>
+      </li>
+      <br>
+    <% } %>
+  </ul>
+</body>
+</html>
