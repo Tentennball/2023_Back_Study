@@ -33,4 +33,15 @@
         @Setter
         private String  encodedApiKey; //여기서 내 secretket로 인코딩 받은 값 넣어줄 것임
 
+        @Value("${sms.accessKey}")
+        private String accessKey;
+
+        @Value("${sms.secretKey}")
+        private String secretKey;
+
+        @Value("${sms.serviceId}")
+        private String serviceId;
+
+        @Value("${sms.senderPhone}")
+        private String phone;
     }

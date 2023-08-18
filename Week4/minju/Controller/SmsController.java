@@ -1,37 +1,51 @@
 package week4.tosspayments.Controller;
 
-import net.nurigo.java_sdk.Coolsms;
-import net.nurigo.java_sdk.exceptions.CoolsmsException;
-import org.json.simple.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.client.RestClientException;
+import week4.tosspayments.Dto.MessageDTO;
+import week4.tosspayments.Dto.SmsResponseDTO;
+import week4.tosspayments.Service.SmsService;
 
-import java.util.HashMap;
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 
-@RestController
-@RequestMapping("/sms")
+
+@Slf4j
+@Controller
+@RequiredArgsConstructor
 public class SmsController {
 
-    @GetMapping
-    public String sendSms() {
-        String api_key = "NCSWYTUTQAYGFATB";
-        String api_secret = "0TXOVZXZM2ECXXV5DTYATOCKIJT90VWE";
-        Coolsms coolsms = new Coolsms(api_key, api_secret);
-        HashMap<String, String> params = new HashMap<String, String>();
+    private final SmsService smsService;
 
-        params.put("to", "받는 사람의 전화번호");
-        params.put("from", "보내는 사람의 전화번호");
-        params.put("type", "SMS");
-        params.put("text", "문자 내용");
-        params.put("app_version", "test app 1.2");
+    @GetMapping("/send")
+    public String getSmsPage() {
+        return "sendSms";
+    }
 
+    @PostMapping("/sms/send")
+    public String sendSms(MessageDTO messageDto, Model model) throws JsonProcessingException, RestClientException, URISyntaxException, InvalidKeyException, NoSuchAlgorithmException, UnsupportedEncodingException {
         try {
-            JSONObject response = coolsms.sendSMS(params); // sendSMS 메서드 호출
-            return response.toString();
-        } catch (CoolsmsException e) {
+            System.out.println("MessageDTO 발신확인"+messageDto.getTo());
+            System.out.println("MessageDTO 내용확인"+messageDto.getContent());
+
+            SmsResponseDTO response = smsService.sendSms(messageDto);
+            log.debug("SmsResponseDTO: {}", response);
+            log.debug("requestId: {}", response.getRequestId());
+            model.addAttribute("response", response);
+        } catch (JsonProcessingException | RestClientException | URISyntaxException | InvalidKeyException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            // 예외 처리 로직
             e.printStackTrace();
-            return "Error: " + e.getMessage() + ", Code: " + e.getCode();
+            // 예외 메시지를 모델에 추가하거나 다른 작업을 수행할 수 있습니다.
         }
+        return "smsResult";
     }
 }
+
