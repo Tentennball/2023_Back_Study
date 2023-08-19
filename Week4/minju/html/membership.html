@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>join the membership</title>
+  <script>
+        function checkEmail() {
+            var emailInput = document.getElementById('email').value;
+            if (!emailInput.includes('@')) {
+                alert('잘못된 이메일 형식입니다.');
+            }
+        }
+
+       function check_phone() {
+          var PhoneInput = document.getElementById("phoneNumber").value;
+          if (PhoneInput.includes('-')) {
+              alert('휴대번호에 - 는 빼고 작성해주세요.');
+          }
+       }
+</script>
+</head>
+
+<body>
+<div class="container">
+  <form action="/membership" method="post">
+    <div class="form-group">
+      <label for="name">이름</label>
+      <input type="name" id="name" name="name" placeholder="이름을 입력하세요"> <br>
+      <label for="email">이메일</label>
+      <input type="text" id="email" name="email" placeholder="이메일을 입력하세요"> <br>
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요"> <br>
+      <label for="phoneNumber">전화번호</label>
+      <input type="text" id="phoneNumber" name="phoneNumber" placeholder="전화번호를 입력하세요">
+    </div>
+    <button type="submit">등록</button>
+  </form>
+</div> <!-- /container -->
+</body>
+</html>
